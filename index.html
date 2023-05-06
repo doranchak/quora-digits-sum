@@ -1,0 +1,45 @@
+<style>
+* { font-size: 14pt; }
+</style>
+<script>
+function search() {
+	document.getElementById("out").innerHTML = "";
+	var n = document.getElementById("digits").options[document.getElementById("digits").selectedIndex].value;
+	var target = document.getElementById("target").value;
+	var digits = [];
+	for (var i=0; i<n; i++) digits[i] = 0;
+	console.log(digits + " " + n + " " + target);
+	var result = go(digits, 0, target);
+	document.getElementById("out").innerHTML += "<p><b>Total numbers whose digits add up to " + target + ": " + result + "</p>";
+}
+function go(digits, index, target) {
+	var result = 0;
+	if (index==digits.length) {
+		if (digits[0] == 0) return 0;
+		var html = "";
+		var sum = 0;
+		for (var i=0; i<digits.length; i++) {
+			html += digits[i];
+			sum += digits[i];
+		}
+		if (sum == target) {
+			html += " ";
+			document.getElementById("out").innerHTML += html;
+			return 1;
+		}
+		return 0;
+	}
+	for (var i=0; i<10; i++) {
+		digits[index] = i;
+		result += go(digits, index+1, target);
+	}
+	return result;
+}
+</script>
+<html>
+<body onload="search()">
+<p><input type="button" onclick="search()" value="Show"> all <select id="digits" onchange="search()"><option>1</option><option>2</option><option selected >3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>-digit numbers that add up to 
+<input type="text" size="2" id="target" value="9" onchange="search()"></p>	
+<div id="out"></div>
+</body>
+</html>
